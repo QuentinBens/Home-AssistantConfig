@@ -15,6 +15,7 @@ discovery:
     - yeelight
 
 
+
 yeelight:
   devices:
     192.168.1.21:
