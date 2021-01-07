@@ -1,1 +1,279 @@
-[]
+- id: '1587929683438'
+  alias: Allume l'entrée par détection de nuit  (1% luminosité)
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: 424b8b35a1ae56078981353d009f63b2
+    entity_id: binary_sensor.capteur_entree
+    domain: binary_sensor
+  condition:
+  - condition: state
+    entity_id: sun.sun
+    state: below_horizon
+  action:
+  - type: turn_on
+    device_id: 25b95c0cdc322cab5aecf13fe273b94c
+    entity_id: light.ampoule_yeelight_entree
+    domain: light
+    brightness_pct: 1
+  mode: single
+- alias: restart_brio_desktop
+  trigger:
+    platform: state
+    entity_id: input_select.pcoptions
+    to: Restart
+  action:
+  - service: shell_command.restart_brio_desktop
+  id: 3d1a5bb23f2d476e82ab3370766bf60c
+- alias: shutdown_brio_desktop
+  trigger:
+    platform: state
+    entity_id: input_select.pcoptions
+    to: Shutdown
+  action:
+  - service: shell_command.shutdown_brio_desktop
+  id: ccb4fbb942e842a692bcc3b407a9bcfb
+- alias: sleep_brio_desktop
+  trigger:
+    platform: state
+    entity_id: input_select.pcoptions
+    to: Sleep
+  action:
+  - service: shell_command.sleep_brio_desktop
+  id: c362daa7a99b4ddfaf88bf06c6da6aaa
+- alias: hibernate_brio_desktop
+  trigger:
+    platform: state
+    entity_id: input_select.pcoptions
+    to: Hibernate
+  action:
+  - service: shell_command.hibernate_brio_desktop
+  id: 8322d58dd2334d68ade78fb49dc090cc
+- id: '1589754965163'
+  alias: Coupe la prise connectée quand iphone charge a 100%
+  description: ''
+  trigger:
+  - above: '64'
+    entity_id: sensor.brio_battery_level
+    platform: numeric_state
+  condition:
+  - condition: state
+    entity_id: sensor.brio_battery_state
+    state: Charging
+  action:
+  - device_id: 07e4816418d5455888ee7e8973a10d6b
+    domain: switch
+    entity_id: switch.prise_pc
+    type: turn_off
+- id: '1606344791974'
+  alias: Eteint l'entrée si ne détécte plus de mouvement
+  description: ''
+  trigger:
+  - type: no_motion
+    platform: device
+    device_id: 424b8b35a1ae56078981353d009f63b2
+    entity_id: binary_sensor.capteur_entree
+    domain: binary_sensor
+  condition: []
+  action:
+  - type: turn_off
+    device_id: 25b95c0cdc322cab5aecf13fe273b94c
+    entity_id: light.ampoule_yeelight_entree
+    domain: light
+  mode: single
+- id: '1606344988101'
+  alias: Notification Porte d'entrée ouverte
+  description: ''
+  trigger:
+  - type: opened
+    platform: device
+    device_id: 02a99ac64c1965b4e4a70f347ed4b10d
+    entity_id: binary_sensor.capteur_porte_entree
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: notify.mobile_app_ibrio
+    data:
+      title: Sécurité
+      message: Porte d'entrée ouverte
+  - service: notify.mobile_app_redmi_meygan
+    data:
+      title: Sécurité
+      message: Porte d'entrée ouverte
+  mode: single
+- id: '1606422765158'
+  alias: Notification Porte d'entrée fermée
+  description: ''
+  trigger:
+  - type: not_opened
+    platform: device
+    device_id: 02a99ac64c1965b4e4a70f347ed4b10d
+    entity_id: binary_sensor.capteur_porte_entree
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: notify.mobile_app_ibrio
+    data:
+      title: Sécurité
+      message: Porte d'entrée fermée
+  - service: notify.mobile_app_redmi_meygan
+    data:
+      title: Sécurité
+      message: Porte d'entrée fermée
+  mode: single
+- id: '1607196961659'
+  alias: 'Allume toilette par détection de nuit  (1% luminosité) '
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: c1da7d2caedf49eadc6158392dc635df
+    entity_id: binary_sensor.capteur_couloir
+    domain: binary_sensor
+  condition:
+  - condition: state
+    entity_id: sun.sun
+    state: below_horizon
+  action:
+  - type: turn_on
+    device_id: cd64478c18fab0f56df372a7dd706bc4
+    entity_id: light.ampoule_toilette
+    domain: light
+    brightness_pct: 1
+  mode: single
+- id: '1607197152107'
+  alias: Eteint toilette si ne détecte plus de mouvement
+  description: ''
+  trigger:
+  - type: no_motion
+    platform: device
+    device_id: c1da7d2caedf49eadc6158392dc635df
+    entity_id: binary_sensor.capteur_couloir
+    domain: binary_sensor
+  condition: []
+  action:
+  - type: turn_off
+    device_id: cd64478c18fab0f56df372a7dd706bc4
+    entity_id: light.ampoule_toilette
+    domain: light
+  mode: single
+- id: '1607198726517'
+  alias: Allume toilette par détection, de jour  (100% luminosité)
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: c1da7d2caedf49eadc6158392dc635df
+    entity_id: binary_sensor.capteur_couloir
+    domain: binary_sensor
+  condition:
+  - condition: state
+    entity_id: sun.sun
+    state: above_horizon
+  action:
+  - type: turn_on
+    device_id: cd64478c18fab0f56df372a7dd706bc4
+    entity_id: light.ampoule_toilette
+    domain: light
+    brightness_pct: 100
+  mode: single
+- id: '1607625116051'
+  alias: Allumer le sapin de 20
+  description: ''
+  trigger:
+  - platform: time
+    at: '20:00:00'
+  condition: []
+  action:
+  - type: turn_on
+    device_id: 07e4816418d5455888ee7e8973a10d6b
+    entity_id: switch.prise_pc
+    domain: switch
+  mode: single
+- id: '1607625166006'
+  alias: Eteindre le sapin à 00h
+  description: ''
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition: []
+  action:
+  - type: turn_off
+    device_id: 07e4816418d5455888ee7e8973a10d6b
+    entity_id: switch.prise_pc
+    domain: switch
+  mode: single
+- alias: 'Frontend: turn on dark mode'
+  trigger:
+  - platform: time
+    at: '20:00'
+  - platform: sun
+    event: sunset
+  condition: '{{ is_state(''input_boolean.dark_mode'', ''off'') }}'
+  action:
+    entity_id: input_boolean.dark_mode
+    service: input_boolean.turn_on
+  id: 0338ebe0988944a4bb2a98f87f0fcb9a
+- alias: 'Frontend: turn on light mode'
+  trigger:
+  - platform: time
+    at: 06:00
+  - platform: sun
+    event: sunrise
+  condition: '{{ is_state(''input_boolean.dark_mode'', ''on'') }}'
+  action:
+    entity_id: input_boolean.dark_mode
+    service: input_boolean.turn_off
+  id: 9edb67b503a44f9281f2edf79f23d5b8
+- alias: 'Frontend: change theme'
+  trigger:
+  - platform: state
+    entity_id: input_select.theme
+  - platform: state
+    entity_id: input_boolean.dark_mode
+  - platform: state
+    entity_id: input_boolean.theme_alternative
+  - platform: homeassistant
+    event: start
+  action:
+    service: frontend.set_theme
+    data:
+      name: '{% set which = "dark" if is_state("input_boolean.dark_mode", "on") else
+        "light" -%} {% set name = states("input_select.theme") -%} {% set suffix =
+        "-alternative" if is_state("input_boolean.theme_alternative", "on") else ""
+        -%} ios-{{ which }}-mode-{{ name }}{{ suffix }}'
+  id: c3488376e61947f1beb6ef6ccfc2e8fd
+- id: '1609967384209'
+  alias: 'TEST '
+  description: ''
+  trigger:
+  - device_id: e0d3264facda1179f49fb3a69fdb7a78
+    domain: deconz
+    platform: device
+    type: remote_button_long_press
+    subtype: turn_on
+  condition: []
+  action:
+  - type: turn_on
+    device_id: 25b95c0cdc322cab5aecf13fe273b94c
+    entity_id: light.ampoule_yeelight_entree
+    domain: light
+    brightness_pct: 100
+  mode: single
+- id: '1609967449508'
+  alias: TEST 2
+  description: ''
+  trigger:
+  - device_id: e0d3264facda1179f49fb3a69fdb7a78
+    domain: deconz
+    platform: device
+    type: remote_button_long_release
+    subtype: turn_on
+  condition: []
+  action:
+  - type: turn_off
+    device_id: 25b95c0cdc322cab5aecf13fe273b94c
+    entity_id: light.ampoule_yeelight_entree
+    domain: light
+  mode: single

@@ -2,6 +2,9 @@
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
 
+#nabu cada
+cloud:
+
 # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
 # http:
 #   base_url: example.duckdns.org:8123
@@ -12,14 +15,11 @@ tts:
   
 discovery:
   ignore:
-    - yeelight
-
-
 
 yeelight:
   devices:
     192.168.1.21:
-      name: ampoule_yeelight_cuisine
+      name: ampoule_yeelight_sdb_applique
     192.168.1.142:
       name: ampoule_yeelight_salon
     192.168.1.198:
@@ -28,9 +28,57 @@ yeelight:
       name: ampoule_yeelight_chambre
     192.168.1.101:
       name: ampoule_yeelight_couloir
-      
+
+asuswrt:
+  host: 192.168.1.1
+  username: brio
+  port: 2285
+  protocol: ssh
+  ssh_key: .ssh/id_rsa_router
+  sensors:
+    - devices
+    - upload
+    - download
+    - upload_speed
+    - download_speed
+
+
 
 group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
+switch: !include switch.yaml
+logger: !include logger.yaml
+frontend:
+  themes: !include_dir_merge_named themes
+
+homeassistant:
+  customize: !include customize.yaml
+
+sonoff:
+  username: meyg2607@gmail.com
+  password: !secret ewelink_meyg_password
+  default_class: light
+  #reload: always  # update device list every time HA starts
+
+wake_on_lan:
+
+
+input_select:
+  pcoptions:
+    name: PC Power Options
+    options:
+      - Restart
+      - Shutdown
+      - None
+      - Sleep
+      - Hibernate
+    initial: None
+    icon: mdi:desktop-tower
+
+shell_command:
+  shutdown_brio_desktop: 'curl -k http://192.168.1.9:8000?action=System.Shutdown'
+  restart_brio_desktop: 'curl -k http://192.168.1.9:8000?action=System.Restart'
+  sleep_brio_desktop: 'curl -k http://192.168.1.9:8000?action=System.Sleep'
+  hibernate_brio_desktop: 'curl -k http://192.168.1.9:8000?action=System.Hibernate'
