@@ -1,0 +1,12 @@
+all_lights:
+  name: Lumières
+  entities:
+    - light.ampoule_yeelight_salon
+    - light.ampoule_yeelight_entree
+    - light.ampoule_yeelight_couloir
+    - light.ampoule_yeelight_chambre
+    - light.ampoule_yeelight_sdb_applique
+    - light.ampoule_toilette
+    - light.ampoule_chambre_2
+    - light.ampoule_sdb
+    - light.sonoff_1000dbd03a

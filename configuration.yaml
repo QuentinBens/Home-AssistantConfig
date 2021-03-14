@@ -1,8 +1,7 @@
-
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
 
-#nabu cada
+#nabu casa
 cloud:
 
 # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
@@ -18,8 +17,7 @@ discovery:
 
 yeelight:
   devices:
-    192.168.1.21:
-      name: ampoule_yeelight_sdb_applique
+
     192.168.1.142:
       name: ampoule_yeelight_salon
     192.168.1.198:
@@ -31,18 +29,25 @@ yeelight:
 
 asuswrt:
   host: 192.168.1.1
+  mode: router
   username: brio
   port: 2285
   protocol: ssh
-  ssh_key: .ssh/id_rsa_router
+  ssh_key: /config/.ssh/id_rsa_router
   sensors:
     - devices
-    - upload
-    - download
-    - upload_speed
-    - download_speed
+    # - upload
+    # - download
+    # - upload_speed
+    # - download_speed
 
 
+device_tracker:
+  - platform: asuswrt
+    interval_seconds: 10
+    consider_home: 180
+    new_device_defaults:
+      track_new_devices: true
 
 group: !include groups.yaml
 automation: !include automations.yaml
@@ -50,6 +55,8 @@ script: !include scripts.yaml
 scene: !include scenes.yaml
 switch: !include switch.yaml
 logger: !include logger.yaml
+light: !include light.yaml
+notify: !include notify.yaml
 frontend:
   themes: !include_dir_merge_named themes
 
@@ -77,8 +84,24 @@ input_select:
     initial: None
     icon: mdi:desktop-tower
 
+  jinxoptions:
+    name: Jinx Power Options
+    options:
+      - Restart
+      - Shutdown
+      - None
+    initial: None
+    icon: mdi:server
+
 shell_command:
   shutdown_brio_desktop: 'curl -k http://192.168.1.9:8000?action=System.Shutdown'
   restart_brio_desktop: 'curl -k http://192.168.1.9:8000?action=System.Restart'
   sleep_brio_desktop: 'curl -k http://192.168.1.9:8000?action=System.Sleep'
   hibernate_brio_desktop: 'curl -k http://192.168.1.9:8000?action=System.Hibernate'
+  shutdown_jinx_server_esp6s0: 'ssh root@jinx poweroff'
+  restart_jinx_server_esp6s0: 'ssh root@jinx systemctl reboot'
+  
+  
+  
+  
+  

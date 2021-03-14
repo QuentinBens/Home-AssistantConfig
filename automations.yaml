@@ -50,6 +50,26 @@
   action:
   - service: shell_command.hibernate_brio_desktop
   id: 8322d58dd2334d68ade78fb49dc090cc
+  
+  
+- alias: restart_jinx_server_esp6s0
+  trigger:
+    platform: state
+    entity_id: input_select.jinxoptions
+    to: Restart
+  action:
+  - service: shell_command.restart_jinx_server_esp6s0
+  id: 3d2a5cb23f4d376e32ab3360766ba60c
+
+- alias: shutdown_jinx_server_esp6s0
+  trigger:
+    platform: state
+    entity_id: input_select.jinxoptions
+    to: Restart
+  action:
+  - service: shell_command.shutdown_jinx_server_esp6s0
+  id: 3d1a5bb23f2d376e42ab3360766ba60c
+  
 - id: '1589754965163'
   alias: Coupe la prise connectée quand iphone charge a 100%
   description: ''
@@ -93,11 +113,7 @@
     domain: binary_sensor
   condition: []
   action:
-  - service: notify.mobile_app_ibrio
-    data:
-      title: Sécurité
-      message: Porte d'entrée ouverte
-  - service: notify.mobile_app_redmi_meygan
+  - service: notify.all_devices
     data:
       title: Sécurité
       message: Porte d'entrée ouverte
@@ -113,11 +129,7 @@
     domain: binary_sensor
   condition: []
   action:
-  - service: notify.mobile_app_ibrio
-    data:
-      title: Sécurité
-      message: Porte d'entrée fermée
-  - service: notify.mobile_app_redmi_meygan
+  - service: notify.all_devices
     data:
       title: Sécurité
       message: Porte d'entrée fermée

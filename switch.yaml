@@ -5,3 +5,10 @@
   name: "brio_desktop"
   turn_off:
     service: shell_command.shutdown_brio_desktop
+
+- platform: wake_on_lan
+  mac: "00:25:90:62:38:80"
+  host: 192.168.1.201
+  name: "jinx_server_esp6s0"
+  turn_off:
+    service: shell_command.shutdown_jinx_server_esp6s0
